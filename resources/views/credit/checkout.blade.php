@@ -43,7 +43,7 @@
                         <div id="card-errors" role="alert"></div>
                         <div class="form-group mt-3">
                             <button type="submit" class="btn bg-cart pay">
-                                دفع {{$total}} $
+                                دفع {{$total}} $ <span class="icon" hidden><i class="fas fa-sync fa-spin"></i></span>
                             </button>
                         </div>
                     </form>
@@ -90,12 +90,14 @@
             }
         ).then(function (result) {
             if (result.error) {
-                $('#card-errors').text(result.error.message)
+                toastr.error('المعطيات التي قمت بادخلها تحتوي على خطأ! راجعها و حاول مرة اخرى')
                 $('button.pay').removeAttr('disabled')
             } else {
                 paymentMethod = result.setupIntent.payment_method
                 $('.payment-method').val(paymentMethod)
                 $('.card-form').submit()
+                $('span.icon').removeAttr('hidden')
+                $('button.pay').attr('disabled', true)
             }
         })
         return false

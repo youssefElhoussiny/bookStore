@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- bootstrap && fontawsam --}}
@@ -52,7 +52,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            
+
         }
         .rating
         {
@@ -64,7 +64,7 @@
         .rating-star{
             padding: 0 5px;
             margin: 0;
-            cursor: pointer; 
+            cursor: pointer;
             display: block;
             float: left;
         }
@@ -125,37 +125,37 @@
                                         @else
                                             <span class="badge bg-secondary">0</span>
                                         @endif
-                                            العربة 
-                                        <i class="fas fa-shopping-cart"></i> 
+                                            العربة
+                                        <i class="fas fa-shopping-cart"></i>
                                     </a>
                                 </li>
                             @endauth
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('gallery.categories.index') }}">
-                                        التصنيفات                                        
-                                    <i class="fas fa-list"></i> 
+                                        التصنيفات
+                                    <i class="fas fa-list"></i>
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('gallery.publishers.index') }}">
-                                    الناشرون                                         
-                                    <i class="fas fa-table"></i> 
+                                    الناشرون
+                                    <i class="fas fa-table"></i>
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('gallery.authors.index') }}">
-                                    المؤلفون                                         
-                                    <i class="fas fa-pen"></i> 
+                                    المؤلفون
+                                    <i class="fas fa-pen"></i>
                                 </a>
                             </li>
 
                             @auth
                                 <li class="nav-item">
-                                    <a class="nav-link" href="">
-                                        مشترياتي     
-                                        <i class="fas fa-basket-shopping"></i> 
+                                    <a class="nav-link" href="{{route('my.product')}}">
+                                        مشترياتي
+                                        <i class="fas fa-basket-shopping"></i>
                                     </a>
                                 </li>
                             @endauth
@@ -186,52 +186,52 @@
                                                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                                                 </div>
                                             </div>
-                                
+
                                             <div class="mt-3 space-y-1 text-right">
                                                 <!-- Account Management -->
                                                 <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                                                     {{ __('Profile') }}
                                                 </x-responsive-nav-link>
-                                
-                                
+
+
                                                 <!-- Authentication -->
                                                 <form method="POST" action="{{ route('logout') }}" x-data>
                                                     @csrf
-                                                    
+
                                                     <x-responsive-nav-link href="{{ route('logout') }}"
                                                         onclick="event.preventDefault();
                                                         this.closest('form').submit();" >
                                                         {{ __('Log Out') }}
                                                     </x-responsive-nav-link>
                                                 </form>
-                                
+
                                                 <!-- Team Management -->
                                                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                                                     <div class="border-t border-gray-200"></div>
-                                
+
                                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                                         {{ __('Manage Team') }}
                                                     </div>
-                                
+
                                                     <!-- Team Settings -->
                                                     <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
                                                         {{ __('Team Settings') }}
                                                     </x-responsive-nav-link>
-                                
+
                                                     @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
                                                         <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
                                                             {{ __('Create New Team') }}
                                                         </x-responsive-nav-link>
                                                     @endcan
-                                
+
                                                     <!-- Team Switcher -->
                                                     @if (Auth::user()->allTeams()->count() > 1)
                                                         <div class="border-t border-gray-200"></div>
-                                
+
                                                         <div class="block px-4 py-2 text-xs text-gray-400">
                                                             {{ __('Switch Teams') }}
                                                         </div>
-                                
+
                                                         @foreach (Auth::user()->allTeams() as $team)
                                                             <x-switchable-team :team="$team" component="responsive-nav-link" />
                                                         @endforeach
@@ -243,20 +243,20 @@
                                 </li>
                             @endguest
                         </ul>
-                        
+
                     </div>
                     </div>
                 </nav>
-    
+
                 <main class="py-4">
                     @yield('content')
                 </main>
-    
-    
+
+
         </div>
 
 
-    
+
     <script src="{{asset("asset/popper.min.js")}}"></script>
     <script src="{{asset("asset/bootstrap.min.js")}}"></script>
     <script src="{{asset("asset/all.min.js")}}"></script>

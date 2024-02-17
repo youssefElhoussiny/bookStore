@@ -13,7 +13,7 @@
 
                         <table class="table table-stribed">
                         @auth
-                       
+
                             <div class="form text-center mb-2">
                                 <input type="hidden" id="bookId" value="{{$book->id}}">
                                 <span class="text-muted mb-3">
@@ -21,8 +21,8 @@
                                 </span>
                                 <button type="submit" class="btn bg-cart addCart me-2"><i class="fa fa-cart-plus"></i> اضف للسلة</button>
                             </div>
-                       
-                            
+
+
                         @endauth
                             <tr>
                                 <th>العنوان</th>
@@ -72,7 +72,7 @@
                                     <th>تصنيف الكتاب</th>
                                     <td>{{$book->category->name}}</td>
                                 </tr>
-                                
+
                             @endif
                             @if ($book->authors()->count())
                                 <tr>
@@ -90,21 +90,21 @@
                                 <th>الناشر</th>
                                 <td>{{$book->publisher->name}}</td>
                             </tr>
-                                
+
                             @endif
                             @if ($book->description)
                                 <tr>
                                     <th>الوصف</th>
                                     <td>{{$book->description}}</td>
                                 </tr>
-                                
+
                             @endif
                             @if ($book->publish_year)
                             <tr>
                                 <th>سنة النشر</th>
                                 <td>{{$book->publish_year}}</td>
                             </tr>
-                            
+
                         @endif
                         <tr>
                             <th>عدد الصفحات</th>
@@ -118,26 +118,29 @@
                             <th>السعر</th>
                             <td>{{$book->price}} $</td>
                         </tr>
-                        
+
                         </table>
                         @auth
                             <h4 class="mb-3">قيم هذا الكتاب</h4>
-                            @if (auth()->user()->rated($book))
-                                <div class="rating">
-                                    <span class="rating-star {{auth()->user()->bookRating($book)->value == 5 ? 'checked' : ''}}" data-value="5"></span>
-                                    <span class="rating-star {{auth()->user()->bookRating($book)->value == 4 ? 'checked' : ''}}" data-value="4"></span>
-                                    <span class="rating-star {{auth()->user()->bookRating($book)->value == 3 ? 'checked' : ''}}" data-value="3"></span>
-                                    <span class="rating-star {{auth()->user()->bookRating($book)->value == 2 ? 'checked' : ''}}" data-value="2"></span>
-                                    <span class="rating-star {{auth()->user()->bookRating($book)->value == 1 ? 'checked' : ''}}" data-value="1"></span>
-                                </div>
-                            @else
-                                <div class="rating">
-                                    <span class="rating-star" data-value="5"></span>
-                                    <span class="rating-star" data-value="4"></span>
-                                    <span class="rating-star" data-value="3"></span>
-                                    <span class="rating-star" data-value="2"></span>
-                                    <span class="rating-star" data-value="1"></span>
-                                </div>  
+                            @if ($bookfind)
+
+                                @if (auth()->user()->rated($book))
+                                    <div class="rating">
+                                        <span class="rating-star {{auth()->user()->bookRating($book)->value == 5 ? 'checked' : ''}}" data-value="5"></span>
+                                        <span class="rating-star {{auth()->user()->bookRating($book)->value == 4 ? 'checked' : ''}}" data-value="4"></span>
+                                        <span class="rating-star {{auth()->user()->bookRating($book)->value == 3 ? 'checked' : ''}}" data-value="3"></span>
+                                        <span class="rating-star {{auth()->user()->bookRating($book)->value == 2 ? 'checked' : ''}}" data-value="2"></span>
+                                        <span class="rating-star {{auth()->user()->bookRating($book)->value == 1 ? 'checked' : ''}}" data-value="1"></span>
+                                    </div>
+                                @else
+                                    <div class="rating">
+                                        <span class="rating-star" data-value="5"></span>
+                                        <span class="rating-star" data-value="4"></span>
+                                        <span class="rating-star" data-value="3"></span>
+                                        <span class="rating-star" data-value="2"></span>
+                                        <span class="rating-star" data-value="1"></span>
+                                    </div>
+                                @endif
                             @endif
                         @endauth
                     </div>
@@ -192,7 +195,7 @@
                     toastr.success('تم اضافة الكتاب بنجاح');
                 },
                 error:function(){
-                    alert('حدث خطأ ما');    
+                    alert('حدث خطأ ما');
                 }
             })
         })

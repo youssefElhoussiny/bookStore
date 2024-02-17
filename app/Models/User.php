@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -84,5 +85,14 @@ class User extends Authenticatable
     public function booksInCart()
     {
         return $this->belongsToMany(Book::class)->withPivot(['number_of_copies','bought','price'])->wherePivot('bought',FALSE);
+    }
+
+    public function ratedpurches()
+    {
+        return $this->belongsToMany(Book::class)->withPivot(['bought'])->wherePivot('bought',true);
+    }
+    public function purchedProduct()
+    {
+        return $this->belongsToMany(Book::class)->withPivot(['number_of_copies','bought','price','created_at'])->orderBy('pivot_created_at','desc')->wherePivot('bought' , true);
     }
 }

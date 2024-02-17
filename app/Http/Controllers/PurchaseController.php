@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderMail;
+use App\Models\shopping;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 class PurchaseController extends Controller
 {
@@ -17,6 +20,13 @@ class PurchaseController extends Controller
         $token = $this->provider->getAccessToken();
         $this->provider->setAccessToken($token);
    }
+   public function sendOrderConfirmationMail($order , $user)
+   {
+     Mail::to($user->email)->send(new OrderMail($order , $user));
+   }
+
+
+
     public function createPayment(Request $request)
     {
         $data = json_decode($request->getContent() , true);
@@ -48,6 +58,7 @@ class PurchaseController extends Controller
         {
             $user = User::find($data['userId']);
             $books = $user->booksInCart;
+            $this->sendOrderConfirmationMail($books , auth()->user());
             foreach($books as $book)
             {
                 $bookPrice = $book->price;
@@ -86,11 +97,15 @@ class PurchaseController extends Controller
         try{
             $user->createOrGetStripeCustomer();
             $user->updateDefaultPaymentMethod($paymentMethod);
-            $user->charge($total * 100 , $paymentMethod );
+            // $user->charge($total * 100 , $paymentMethod );
+            $user->charge($total * 100 , $paymentMethod, [
+                'return_url' => route('cart.view')
+              ]);
 
         }catch(\Exception $exception){
             return back()->with('حصل خطا اثناء شراء المنتج برجاء التاكد من معلومات البطاقة' , $exception->getMessage());
         }
+        $this->sendOrderConfirmationMail($books , auth()->user());
         foreach($books as $book)
             {
                 $bookPrice = $book->price;
@@ -100,4 +115,18 @@ class PurchaseController extends Controller
             }
             return redirect('/cart')->with('message',"تم الشراء بنجاح");
     }
+
+    public function myproduct()
+    {
+        $userId = auth()->user()->id;
+        $myBooks = User::find($userId)->purchedProduct;
+        return view('books.myProduct',compact('myBooks'));
+    }
+
+    public function allProduct()
+    {
+        $allBooks = shopping::with(['user' , 'book'])->where('bought',true)->get();
+        return view('admin.books.allProduct' , compact('allBooks'));
+    }
+
 }
